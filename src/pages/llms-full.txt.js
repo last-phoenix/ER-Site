@@ -8,6 +8,7 @@ export const GET = async () => {
 		const stories = await storyblokApi.getAll('cdn/stories', {
 			sort_by: 'position:desc',
 			version: isPreview() ? 'draft' : 'published',
+      excluding_slugs: 'settings/*',
 		})
 
 		const storyExtract = stories

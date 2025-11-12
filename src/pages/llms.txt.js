@@ -7,6 +7,7 @@ export const GET = async () => {
 		const stories = await storyblokApi.getAll('cdn/stories', {
 			sort_by: 'position:desc',
 			version: isPreview() ? 'draft' : 'published',
+      excluding_slugs: 'settings/*',
 		})
 
 		// Filters all stories not in folders, such as Home and About
@@ -56,10 +57,6 @@ ${mainExtract
 	)
 	.join('\n')}
 ${folderSections}
-
-## Optional
-
-- [Homepage](https://astro-storyblok-finance-starter.netlify.app)
 `
 		return new Response(body, {
 			headers: {
