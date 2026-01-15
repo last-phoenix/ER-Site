@@ -18,11 +18,9 @@
     "@tailwindcss/vite": "^4.1.18",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "astro": "^5.16.9",
-    "astro-scroll-observer": "^0.5.3",
     "axios": "^1.13.2",
     "postcss-import": "^16.1.1",
     "tailwindcss": "^4.1.17",
-"vite-plugin-mkcert": "^1.17.9",
-    "astro-scroll-observer": "^0.5.3"
+    "vite-plugin-mkcert": "^1.17.9"
   }
 }
