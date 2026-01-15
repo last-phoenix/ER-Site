@@ -38,18 +38,9 @@
 @theme {
   --font-inter: "Inter", sans-serif;
   --font-adamina: "Adamina", sans-serif;
-
-  --color-background: #F4F5F5;
-  --color-foreground: #000;
-
-  --color-primary: #193EAF;
-  --color-primary-foreground: #fff;
-
-  --color-card: #FFF;
-  --color-card-foreground: var(--color-foreground);
-
-  --color-muted: #595959;
-
+  --color-background: #FAFAFA;
+  --color-foreground: #1A1A1A;
+  --color-primary: #D4AF37;
   --color-border: #e3e3e333;
 }
 
@@ -133,4 +124,67 @@ header {
   to {
     --angle: 1turn;
   }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.25);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-50px) translateX(30px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(60px);
+  }
+  75% {
+    transform: translateY(40px) translateX(30px);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 20s linear infinite alternate;
+}
+
+.animate-float {
+  animation: float 15s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 25s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
 }

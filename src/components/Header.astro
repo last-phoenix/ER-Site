@@ -5,23 +5,23 @@ import LanguageSwitcher from './LanguageSwitcher.astro'
 const { language, translate, langSwitch, siteSettings } = Astro.props
 ---
 
-<header class="group absolute top-0 right-0 left-0 border-b border-border z-50" id="header">
-  <nav class="max-w-[1016px] mx-auto px-6 flex justify-between items-center md:grid md:grid-cols-3 py-6">
+<header class="group fixed top-0 right-0 left-0 border-b border-border z-50 transition-all duration-300" id="header">
+  <nav class="max-w-[1016px] mx-auto px-6 flex justify-between items-center md:grid md:grid-cols-3 py-6 transition-all duration-300" id="nav-container">
     <!-- Logo -->
-    <div class="flex items-center gap-1 z-50">
+    <div class="flex items-center gap-1 z-50 animate-fade-in-up">
       <a href={getTransLink(language, `/`)}>
-        <img src={siteSettings.logo.filename} alt={siteSettings.logo.alt} />
+        <img src={siteSettings.logo.filename} alt={siteSettings.logo.alt} class="h-16 w-auto object-contain" />
       </a>
     </div>
 
     <!-- Navigation -->
     <ul class="fixed inset-0 flex flex-col items-center justify-center gap-8 bg-primary text-white text-2xl transform transition-transform duration-300 md:static md:flex-row md:bg-transparent md:text-[0.81rem] md:gap-0 md:translate-x-0 translate-x-full group-[.is-open]:translate-x-0">
       {siteSettings.navigation.length &&
-        siteSettings.navigation.map((navItem) => (
-          <li>
+        siteSettings.navigation.map((navItem, index) => (
+          <li class="opacity-0 animate-fade-in-up" style={`animation-delay: ${100 + (index * 50)}ms`}>
             <a
               href={getHref(navItem.url)}
-              class="block px-4 py-2 md:px-4 md:py-2 capitalize hover:opacity-80"
+              class="block px-4 py-2 md:px-4 md:py-2 capitalize hover:opacity-80 transition-opacity"
             >
               {navItem.label}
             </a>
@@ -63,3 +63,20 @@ const { language, translate, langSwitch, siteSettings } = Astro.props
     </div>
   </nav>
 </header>
+
+<script>
+  const header = document.getElementById('header');
+  const navContainer = document.getElementById('nav-container');
+  
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header?.classList.add('bg-black/80', 'backdrop-blur-md', 'py-0');
+      navContainer?.classList.remove('py-6');
+      navContainer?.classList.add('py-3');
+    } else {
+      header?.classList.remove('bg-black/80', 'backdrop-blur-md', 'py-0');
+      navContainer?.classList.remove('py-3');
+      navContainer?.classList.add('py-6');
+    }
+  });
+</script>

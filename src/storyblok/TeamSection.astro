@@ -10,7 +10,7 @@ const { blok } = Astro.props
 
     <ul class="grid md:grid-cols-2 gap-y-16 gap-x-5">
       {blok.members && blok.members.map((member) => (
-        <li class="relative group">
+        <li class="relative group transition-transform duration-300 hover:-translate-y-1">
           <Image
             class="block w-full"
             src={`${member.image.filename}/m/1078x0`}

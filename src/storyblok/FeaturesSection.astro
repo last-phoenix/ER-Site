@@ -10,7 +10,7 @@ const { blok } = Astro.props
 
     <ul class="grid md:grid-cols-3 gap-6">
       {blok.features && blok.features.map((feature) => (
-        <li class="bg-white">
+        <li class="bg-white rounded-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <h3 class="p-6 text-black text-xl font-adamina capitalize">{feature.title}</h3>
           <Image
             src={`${feature.image.filename}/m/700x0`}

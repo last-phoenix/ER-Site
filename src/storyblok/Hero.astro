@@ -4,11 +4,11 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 const { blok } = Astro.props
 ---
 
-<section {...storyblokEditable(blok)} class="group" data-posthog>
+<section {...storyblokEditable(blok)} class="group overflow-hidden" data-posthog>
 
-  <div class="relative min-h-[82vh] flex items-end pt-40 before:absolute before:inset-0 before:bg-black/55 before:mix-blend-multiply before:z-10">
+  <div class="relative min-h-[82vh] flex items-end pt-40 before:absolute before:inset-0 before:bg-black/55 before:mix-blend-multiply before:z-10 overflow-hidden">
 
-    <picture class="absolute z-0 w-full h-full object-cover object-top">
+    <picture class="absolute z-0 w-full h-full object-cover object-top animate-ken-burns">
       <source
         srcset={`${blok.image.filename}/m/640x685/`}
         media="(max-width: 640px)"
@@ -28,26 +28,32 @@ const { blok } = Astro.props
       />
     </picture>
 
+    <!-- Floating Decorative Elements -->
+    <div class="absolute top-1/4 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] animate-float z-0 pointer-events-none"></div>
+    <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-primary/10 rounded-full blur-[120px] animate-float-slow z-0 pointer-events-none"></div>
+
     <div class="relative z-20 w-full pt-10">
       <div class="max-w-[624px] mx-auto mb-28 px-6 flex flex-col gap-y-8 justify-center items-center">
         <div class="max-w-[624px] text-center">
-          <h2 class="text-white text-3xl md:text-5xl leading-[110%] -tracking-[1.92px] font-adamina mb-4">
+          <h2 class="text-white text-3xl md:text-5xl leading-[110%] -tracking-[1.92px] font-adamina mb-4 opacity-0 animate-fade-in-up delay-100">
             {blok.headline}
           </h2>
 
           {blok.lead && (
-            <p class="text-white leading-[150%] -tracking-[0.32px]">
+            <p class="text-white leading-[150%] -tracking-[0.32px] opacity-0 animate-fade-in-up delay-200">
               {blok.lead}
             </p>
           )}
         </div>
 
         {blok.button && blok.button.length > 0 && (
-          <StoryblokComponent blok={blok.button[0]} classes="cta-button" />
+          <div class="opacity-0 animate-fade-in-up delay-300">
+            <StoryblokComponent blok={blok.button[0]} classes="cta-button" />
+          </div>
         )}
       </div>
 
-      <div class="max-w-[1016px] mx-auto px-6">
+      <div class="max-w-[1016px] mx-auto px-6 opacity-0 animate-fade-in-up delay-300">
         {blok.partners && blok.partners.length > 0 && (
           <StoryblokComponent blok={blok.partners[0]} />
         )}
