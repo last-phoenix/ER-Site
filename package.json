@@ -22,7 +22,6 @@
     "axios": "^1.13.2",
     "postcss-import": "^16.1.1",
     "tailwindcss": "^4.1.17",
-"vite-plugin-mkcert": "^1.17.9",
-    "astro-scroll-observer": "^0.5.3"
+    "vite-plugin-mkcert": "^1.17.9"
   }
 }
