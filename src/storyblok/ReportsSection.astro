@@ -11,14 +11,17 @@ const { blok, language } = Astro.props
 
     <ul class="grid md:grid-cols-3 gap-6">
       {
-        blok.reports.length &&
+        blok.reports?.length &&
           blok.reports.map((report) => {
-            report.content.slug = report.slug
-            return (
-              <li>
-                <ReportCard language={language} report={report.content} />
-              </li>
-            )
+            if (report.content) {
+              report.content.slug = report.slug
+              return (
+                <li>
+                  <ReportCard language={language} report={report.content} />
+                </li>
+              )
+            }
+            return null
           })
       }
     </ul>
