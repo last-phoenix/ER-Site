@@ -1,15 +1,15 @@
 ---
-const { label, href, variant = 'primary', classes } = Astro.props
+const { label, href, variant = 'primary', classes = '' } = Astro.props
 
-const baseStyles = 'inline-block px-5 py-4 text-center -tracking-[0.64px] font-medium rounded-sm'
+const baseStyles = 'inline-block px-5 py-4 text-center -tracking-[0.64px] font-medium rounded-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
 const variants = {
-  primary: 'bg-primary text-white',
-  secondary: 'bg-white text-black',
+  primary: 'bg-primary text-white hover:bg-primary/90',
+  secondary: 'bg-white text-black hover:bg-gray-100',
 }
 
 const className = `${classes} ${baseStyles} ${variants[variant] || variants.primary}`
 ---
 
-<a href={href} class={className}>
+<a href={href} class={className.trim()}>
   {label}
 </a>
