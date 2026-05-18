@@ -3,7 +3,7 @@ import { storyblokEditable } from '@storyblok/astro'
 const { blok } = Astro.props
 ---
 
-<div {...storyblokEditable(blok)} class="flex flex-col md:flex-row gap-8 items-center justify-between w-full py-16">
+<div id={blok.anchor_id} {...storyblokEditable(blok)} class="flex flex-col md:flex-row gap-8 items-center justify-between w-full py-16">
   {blok.title && <h2 class="text-white shrink-0">{blok.title}</h2>}
 
   <ul class="grid grid-cols-2 sm:grid-cols-5 gap-x-5 gap-y-10">

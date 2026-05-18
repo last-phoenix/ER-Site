@@ -37,6 +37,24 @@ export default defineConfig({
   integrations: [
     storyblok({
       accessToken: env.STORYBLOK_TOKEN,
+      components: {
+        page: 'storyblok/Page',
+        report: 'storyblok/Report',
+        'par-mani': 'storyblok/ParMani',
+        hero: 'storyblok/Hero',
+        reports_section: 'storyblok/ReportsSection',
+        reports_list: 'storyblok/ReportsList',
+        features_section: 'storyblok/FeaturesSection',
+        stats_section: 'storyblok/StatsSection',
+        testimonials_section: 'storyblok/TestimonialsSection',
+        team_section: 'storyblok/TeamSection',
+        partners_section: 'storyblok/PartnersSection',
+        advisers_section: 'storyblok/AdvisersSection',
+        banner_cta: 'storyblok/BannerCta',
+        banner_split: 'storyblok/BannerSplit',
+        heading: 'storyblok/Heading',
+        button: 'storyblok/Button',
+      },
       bridge: {
         resolveRelations: ['reports_section.reports'],
       },

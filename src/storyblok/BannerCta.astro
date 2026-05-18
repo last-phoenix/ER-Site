@@ -4,7 +4,7 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 const { blok } = Astro.props
 ---
 
-<section {
+<section id={blok.anchor_id} {
   ...storyblokEditable(blok)}
   class="bg-no-repeat bg-cover bg-center"
   style={`background-image: ${blok.image.filename ? `url('${blok.image.filename}/m/1440x0/filters:quality(90)')` : ''}`}

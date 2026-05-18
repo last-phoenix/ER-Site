@@ -5,7 +5,7 @@ import ReportCard from '../components/ReportCard.astro'
 const { blok, language } = Astro.props
 ---
 
-<section {...storyblokEditable(blok)} class="bg-black">
+<section id={blok.anchor_id} {...storyblokEditable(blok)} class="bg-black">
   <div class="container mx-auto px-6 py-24 flex flex-col items-center gap-16">
     {blok.title && <h2 class="text-white text-3xl md:text-5xl text-center leading-[120%] font-adamina mb-16 px-6">{blok.title}</h2>}
 

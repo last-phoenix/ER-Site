@@ -4,7 +4,7 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 const { blok } = Astro.props
 ---
 
-<section {...storyblokEditable(blok)} class="group overflow-hidden" data-posthog>
+<section id={blok.anchor_id} {...storyblokEditable(blok)} class="group overflow-hidden" data-posthog>
 
   <div class="relative min-h-[82vh] flex items-end pt-40 before:absolute before:inset-0 before:bg-black/55 before:mix-blend-multiply before:z-10 overflow-hidden">
 
