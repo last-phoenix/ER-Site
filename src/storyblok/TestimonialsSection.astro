@@ -7,49 +7,80 @@ const { blok } = Astro.props
 
 <section { ...storyblokEditable(blok)}>
   <div class="container mx-auto px-6">
-    <div class="grid md:grid-cols-2 gap-16 p-16 bg-white">
-      <div class="pt-12 pl-12 bg-primary self-start">
-        <Image
-          src={`${blok.image.filename}/m/858x0`}
-          alt={blok.image.alt}
-          width={405}
-          height={494}
-          layout="full-width"
-          loading="lazy"
-          class="rounded-tl-xl"
-        />
+    <testimonial-carousel class="grid md:grid-cols-2 gap-16 p-16 bg-white relative">
+      <div class="pt-12 pl-12 bg-primary self-start relative min-h-[494px]">
+        {blok.testimonials && blok.testimonials.map((testimonial, index) => (
+          <div
+            class="testimonial-image absolute top-12 left-12 right-0 transition-opacity duration-500 ease-in-out"
+            data-index={index}
+            style={`opacity: ${index === 0 ? '1' : '0'}; z-index: ${index === 0 ? '10' : '1'}; pointer-events: ${index === 0 ? 'auto' : 'none'}; `}
+          >
+            {testimonial.image && testimonial.image.filename && (
+              <Image
+                src={`${testimonial.image.filename}/m/858x0`}
+                alt={testimonial.image.alt || testimonial.author_name}
+                width={405}
+                height={494}
+                layout="full-width"
+                loading={index === 0 ? "eager" : "lazy"}
+                class="rounded-tl-xl w-full h-auto object-cover"
+              />
+            )}
+          </div>
+        ))}
       </div>
       <div class="flex flex-col justify-between items-start gap-8">
         {blok.heading && blok.heading.length > 0 && (
           <StoryblokComponent blok={blok.heading[0]} />
         )}
-        <ul>
-          {blok.testimonials && blok.testimonials.map((testimonial) => (
-            <li>
-              <p class="text-black text-2xl lg:text-4xl leading-[140%] font-adamina mb-4">“{testimonial.quote}“</p>
-              <div class="flex gap-2 items-center p-3 text-black bg-[#F4F5F5]">
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <circle cx="16" cy="16" r="15.7648" fill="url(#paint0_radial_313_2030)" stroke="#FAF8C8" stroke-width="0.4704"/>
-                    <defs>
-                    <radialGradient id="paint0_radial_313_2030" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 16) rotate(90) scale(16)">
-                    <stop stop-color="#F77600"/>
-                    <stop offset="1" stop-color="#F7DE00"/>
-                    </radialGradient>
-                    </defs>
-                  </svg>
+        <div class="relative w-full flex-grow">
+          <ul class="relative w-full h-full min-h-[300px]">
+            {blok.testimonials && blok.testimonials.map((testimonial, index) => (
+              <li
+                class="testimonial-content absolute inset-0 transition-opacity duration-500 ease-in-out"
+                data-index={index}
+                style={`opacity: ${index === 0 ? '1' : '0'}; z-index: ${index === 0 ? '10' : '1'}; pointer-events: ${index === 0 ? 'auto' : 'none'}; `}
+              >
+                <p class="text-black text-2xl lg:text-4xl leading-[140%] font-adamina mb-4">“{testimonial.quote}“</p>
+                <div class="flex gap-2 items-center p-3 text-black bg-[#F4F5F5] w-fit">
+                  <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                      <circle cx="16" cy="16" r="15.7648" fill="url(#paint0_radial_313_2030)" stroke="#FAF8C8" stroke-width="0.4704"/>
+                      <defs>
+                      <radialGradient id="paint0_radial_313_2030" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 16) rotate(90) scale(16)">
+                      <stop stop-color="#F77600"/>
+                      <stop offset="1" stop-color="#F7DE00"/>
+                      </radialGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>{testimonial.author_name}</strong>, {testimonial.author_title}
+                  </div>
                 </div>
-                <div>
-                  <strong>{testimonial.author_name}</strong>, {testimonial.author_title}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-    <div class="max-w-[474px]">
+        {/* Navigation Dots */}
+        {blok.testimonials && blok.testimonials.length > 1 && (
+          <div class="flex gap-3 mt-4 items-center" role="tablist" aria-label="Testimonials Navigation">
+            {blok.testimonials.map((_, index) => (
+              <button
+                class={`testimonial-dot w-3 h-3 rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${index === 0 ? 'bg-primary' : 'bg-gray-300 hover:bg-gray-400'}`}
+                data-index={index}
+                aria-label={`Go to testimonial ${index + 1}`}
+                aria-selected={index === 0 ? "true" : "false"}
+                role="tab"
+              ></button>
+            ))}
+          </div>
+        )}
+      </div>
+    </testimonial-carousel>
+
+    <div class="max-w-[474px] mt-16">
       <h2 class="text-white text-3xl md:text-5xl leading-[120%] font-adamina mb-10">{blok.headline}</h2>
       {blok.button && blok.button.length > 0 && (
         <StoryblokComponent blok={blok.button[0]} />
@@ -57,3 +88,107 @@ const { blok } = Astro.props
     </div>
   </div>
 </section>
+
+<script>
+  class TestimonialCarousel extends HTMLElement {
+    constructor() {
+      super();
+      this.currentIndex = 0;
+      this.timer = null;
+      this.intervalTime = 30000; // 30 seconds
+      this.isHovered = false;
+      this.images = this.querySelectorAll('.testimonial-image');
+      this.contents = this.querySelectorAll('.testimonial-content');
+      this.dots = this.querySelectorAll('.testimonial-dot');
+      this.totalSlides = this.images.length;
+    }
+
+    connectedCallback() {
+      if (this.totalSlides <= 1) return;
+
+      // Bind events
+      this.addEventListener('mouseenter', () => this.pauseTimer());
+      this.addEventListener('mouseleave', () => this.resumeTimer());
+      this.addEventListener('focusin', () => this.pauseTimer());
+      this.addEventListener('focusout', () => this.resumeTimer());
+
+      this.dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          this.goToSlide(index);
+          // Reset timer on manual navigation if not hovered/focused
+          if (!this.isHovered) {
+             this.startTimer();
+          }
+        });
+      });
+
+      this.startTimer();
+    }
+
+    disconnectedCallback() {
+      this.pauseTimer();
+    }
+
+    startTimer() {
+      this.pauseTimer(); // clear any existing
+      this.timer = setInterval(() => {
+        this.nextSlide();
+      }, this.intervalTime);
+    }
+
+    pauseTimer() {
+      this.isHovered = true;
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    }
+
+    resumeTimer() {
+      this.isHovered = false;
+      this.startTimer();
+    }
+
+    nextSlide() {
+      const nextIndex = (this.currentIndex + 1) % this.totalSlides;
+      this.goToSlide(nextIndex);
+    }
+
+    goToSlide(index) {
+      if (index === this.currentIndex) return;
+
+      // Update Images
+      this.images[this.currentIndex].style.opacity = '0';
+      this.images[this.currentIndex].style.zIndex = '1';
+      this.images[this.currentIndex].style.pointerEvents = 'none';
+
+      this.images[index].style.opacity = '1';
+      this.images[index].style.zIndex = '10';
+      this.images[index].style.pointerEvents = 'auto';
+
+      // Update Contents
+      this.contents[this.currentIndex].style.opacity = '0';
+      this.contents[this.currentIndex].style.zIndex = '1';
+      this.contents[this.currentIndex].style.pointerEvents = 'none';
+
+      this.contents[index].style.opacity = '1';
+      this.contents[index].style.zIndex = '10';
+      this.contents[index].style.pointerEvents = 'auto';
+
+      // Update Dots
+      if (this.dots.length > 0) {
+        this.dots[this.currentIndex].classList.remove('bg-primary');
+        this.dots[this.currentIndex].classList.add('bg-gray-300', 'hover:bg-gray-400');
+        this.dots[this.currentIndex].setAttribute('aria-selected', 'false');
+
+        this.dots[index].classList.remove('bg-gray-300', 'hover:bg-gray-400');
+        this.dots[index].classList.add('bg-primary');
+        this.dots[index].setAttribute('aria-selected', 'true');
+      }
+
+      this.currentIndex = index;
+    }
+  }
+
+  customElements.define('testimonial-carousel', TestimonialCarousel);
+</script>
