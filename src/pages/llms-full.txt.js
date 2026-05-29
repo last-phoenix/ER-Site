@@ -25,7 +25,7 @@ export const GET = async () => {
 			// Filter out stories with no content
 			.filter((story) => story.content && story.content !== 'No content available')
 
-      const body = `# Global Finance Starter
+      const body = `# Evija Rača
 
 > Financial clarity tools for modern businesses
 

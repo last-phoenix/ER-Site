@@ -40,7 +40,7 @@ export const GET = async () => {
 			})
 			.join('\n')
 
-    const body = `# Global Finance Starter
+    const body = `# Evija Rača
 
 > Financial clarity tools for modern businesses
 
