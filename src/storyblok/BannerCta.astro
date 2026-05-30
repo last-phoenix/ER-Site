@@ -11,8 +11,8 @@ const { blok } = Astro.props
 
   <!-- Background image with parallax support -->
   <div
-    class="absolute top-0 left-0 w-full h-[140%] -top-[20%] bg-no-repeat bg-cover bg-center parallax-bg z-0 will-change-transform"
-    style={`background-image: ${blok.image?.filename ? `url('${blok.image.filename}/m/1440x0/filters:quality(90)')` : ''}`}
+    class="absolute left-0 w-full bg-no-repeat bg-cover bg-center parallax-bg z-0 will-change-transform"
+    style={`height: 180%; top: -40%; background-image: ${blok.image?.filename ? `url('${blok.image.filename}/m/1440x0/filters:quality(90)')` : ''}`}
   ></div>
 
   <!-- Dark transparent overlay -->
@@ -61,18 +61,14 @@ const { blok } = Astro.props
         const currentDistance = window.innerHeight - rect.top;
         const scrollProgress = Math.max(0, Math.min(1, currentDistance / totalDistance));
 
-        // Since we use -top-[20%] (which is a percentage relative to the parent height, not self height)
-        // Let's rely purely on translate3d for the movement to avoid overwriting base classes.
-        // We removed -translate-y-[15%] and replaced it with -top-[20%] which is handled by layout.
-        // So we can freely set translate3d.
-
-        // Max translation: the element is h-[140%] and top is -20% of section height.
-        // It has 40% section height of extra space.
-        // We can move it from -20% to +20% of section height.
-        const maxMovement = rect.height * 0.2;
+        // The background is height: 180%, top: -40%.
+        // This gives us 40% of extra space at the top and 40% extra at the bottom.
+        // We can safely move it +/- 35% of the section height for a strong effect without revealing gaps.
+        const maxMovement = rect.height * 0.35;
 
         // Calculate offset (-maxMovement to maxMovement)
-        const yOffset = (scrollProgress * 2 - 1) * maxMovement;
+        // Reversed the direction (1 - scrollProgress) for a standard "slower than scroll" parallax feel.
+        const yOffset = ((1 - scrollProgress) * 2 - 1) * maxMovement;
 
         bg.style.transform = `translate3d(0, ${yOffset}px, 0)`;
       }
