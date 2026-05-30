@@ -6,11 +6,20 @@ const { blok } = Astro.props
 
 <section id={blok.anchor_id} {
   ...storyblokEditable(blok)}
-  class="bg-no-repeat bg-cover bg-center"
-  style={`background-image: ${blok.image.filename ? `url('${blok.image.filename}/m/1440x0/filters:quality(90)')` : ''}`}
+  class="relative overflow-hidden w-full banner-cta-section"
   >
 
-  <div class="container mx-auto flex flex-col justify-between items-start min-h-[80vh] py-16 px-6">
+  <!-- Background image with parallax support -->
+  <div
+    class="absolute top-0 left-0 w-full h-[140%] -top-[20%] bg-no-repeat bg-cover bg-center parallax-bg z-0 will-change-transform"
+    style={`background-image: ${blok.image?.filename ? `url('${blok.image.filename}/m/1440x0/filters:quality(90)')` : ''}`}
+  ></div>
+
+  <!-- Dark transparent overlay -->
+  <div class="absolute inset-0 bg-black/60 z-0 pointer-events-none mix-blend-multiply"></div>
+
+  <!-- Content container -->
+  <div class="relative z-10 container mx-auto flex flex-col justify-between items-start min-h-[80vh] py-16 px-6">
 
     {blok.heading && blok.heading.length > 0 && (
       <StoryblokComponent blok={blok.heading[0]} />
@@ -25,3 +34,83 @@ const { blok } = Astro.props
   </div>
 
 </section>
+
+<script>
+  // Ensure we don't attach multiple listeners across page transitions
+  let parallaxInitialized = false;
+  let parallaxRafId: number | null = null;
+
+  function handleParallaxScroll() {
+    if (!parallaxRafId) {
+      parallaxRafId = requestAnimationFrame(updateParallax);
+    }
+  }
+
+  function updateParallax() {
+    const sections = document.querySelectorAll('.banner-cta-section');
+    sections.forEach(section => {
+      const bg = section.querySelector('.parallax-bg') as HTMLElement;
+      if (!bg) return;
+
+      const rect = section.getBoundingClientRect();
+
+      // Check if section is visible in viewport
+      if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+        // Calculate parallax offset based on scroll position relative to the element
+        const totalDistance = window.innerHeight + rect.height;
+        const currentDistance = window.innerHeight - rect.top;
+        const scrollProgress = Math.max(0, Math.min(1, currentDistance / totalDistance));
+
+        // Since we use -top-[20%] (which is a percentage relative to the parent height, not self height)
+        // Let's rely purely on translate3d for the movement to avoid overwriting base classes.
+        // We removed -translate-y-[15%] and replaced it with -top-[20%] which is handled by layout.
+        // So we can freely set translate3d.
+
+        // Max translation: the element is h-[140%] and top is -20% of section height.
+        // It has 40% section height of extra space.
+        // We can move it from -20% to +20% of section height.
+        const maxMovement = rect.height * 0.2;
+
+        // Calculate offset (-maxMovement to maxMovement)
+        const yOffset = (scrollProgress * 2 - 1) * maxMovement;
+
+        bg.style.transform = `translate3d(0, ${yOffset}px, 0)`;
+      }
+    });
+    parallaxRafId = null;
+  }
+
+  function initParallax() {
+    if (parallaxInitialized) return;
+
+    const sections = document.querySelectorAll('.banner-cta-section');
+    if (!sections.length) return;
+
+    window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+
+    // Trigger once on load
+    updateParallax();
+
+    parallaxInitialized = true;
+  }
+
+  function cleanupParallax() {
+    window.removeEventListener('scroll', handleParallaxScroll);
+    parallaxInitialized = false;
+    if (parallaxRafId) {
+      cancelAnimationFrame(parallaxRafId);
+      parallaxRafId = null;
+    }
+  }
+
+  // Handle Astro page transitions if they are used
+  document.addEventListener('astro:page-load', initParallax);
+  document.addEventListener('astro:before-swap', cleanupParallax);
+
+  // Initialize immediately if it's the first load
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initParallax();
+  } else {
+    document.addEventListener('DOMContentLoaded', initParallax);
+  }
+</script>
